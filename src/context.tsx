@@ -240,7 +240,6 @@ export function AppProvider({ children }: { children: ReactNode }) {
     return session
   }
   const resetPatientIntake = () => {
-    setPatientLanguage("en")
     setVerifiedPatient(null)
     setIntakeSession(null)
   }

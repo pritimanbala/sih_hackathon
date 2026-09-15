@@ -20,19 +20,20 @@ export function Login() {
   }
 
   return (
-    <div
-      className="relative min-h-screen overflow-x-hidden px-3 py-8 sm:px-6 sm:py-12"
-      style={{ background: "#F8FAFC" }}
-    >
-      <label className="absolute right-3 top-3 flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-2 py-1.5 text-xs text-slate-600 shadow-sm sm:right-6 sm:top-6">
-        <span className="sr-only">{t("Select language")}</span>
-        <span aria-hidden="true">文</span>
-        <select value={patientLanguage} onChange={(event) => setPatientLanguage(event.target.value as PatientLanguage)} className="max-w-[92px] bg-transparent font-semibold outline-none" aria-label={t("Select language")}>
-          <option value="en">{languageLabels.en}</option>
-          <option value="hi">{languageLabels.hi}</option>
-          <option value="ta">{languageLabels.ta}</option>
-        </select>
-      </label>
+    <div className="min-h-screen overflow-x-hidden bg-[#F8FAFC] text-slate-900">
+      <nav className="sticky top-0 z-10 flex items-center justify-between border-b border-slate-200 bg-white/95 px-4 py-3 backdrop-blur sm:px-8">
+        <div className="flex items-center gap-3">
+          <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-700 text-xl font-bold text-white">✚</span>
+          <div><div className="font-bold tracking-tight">MediTriage</div><div className="text-xs text-slate-500">{t("AI-Powered Imaging Triage Platform")}</div></div>
+        </div>
+        <div className="flex items-center gap-2"><span className="hidden text-sm text-slate-500 sm:inline">{t("Home")}</span>
+          <label className="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-2 py-1.5 text-xs text-slate-600 shadow-sm">
+            <span aria-hidden="true">文</span><span className="sr-only">{t("Select language")}</span>
+            <select value={patientLanguage} onChange={(event) => setPatientLanguage(event.target.value as PatientLanguage)} className="max-w-[92px] bg-transparent font-semibold outline-none" aria-label={t("Select language")}><option value="en">{languageLabels.en}</option><option value="hi">{languageLabels.hi}</option><option value="ta">{languageLabels.ta}</option></select>
+          </label>
+        </div>
+      </nav>
+      <main className="px-3 py-8 sm:px-6 sm:py-12">
       {/* Header */}
       <div className="text-center mb-12">
         <div className="flex items-center justify-center gap-3 mb-4">
@@ -72,7 +73,7 @@ export function Login() {
       </div>
 
       {/* Role cards */}
-      <div className="mx-auto grid w-full max-w-[900px] grid-cols-1 items-stretch justify-center gap-4 px-0 mb-8 sm:grid-cols-3 sm:gap-5 sm:px-4">
+      <div className="mx-auto grid w-full max-w-[960px] grid-cols-1 items-stretch justify-center gap-4 px-0 mb-8 sm:grid-cols-2 sm:gap-5 sm:px-4">
         {[
           {
             role: "admin" as Role,
@@ -207,18 +208,13 @@ export function Login() {
             </div>
           )
         })}
+        <button type="button" onClick={() => { resetPatientIntake(); setPatientKioskOpen(true) }} className="min-w-0 rounded-lg border-2 border-teal-200 bg-teal-50 p-6 text-left shadow-sm transition hover:border-teal-600 hover:bg-teal-100 sm:col-span-2">
+          <div className="flex items-center gap-3"><span className="flex h-10 w-10 items-center justify-center rounded bg-teal-700 text-xl text-white">✚</span><div><div className="font-semibold text-slate-900">{t("Patient")}</div><div className="text-xs text-slate-500">PATIENT</div></div></div>
+          <p className="mt-3 text-sm text-slate-600">{t("Open patient check-in")}</p>
+          <span className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded bg-teal-700 py-2 text-xs font-semibold text-white">✚ {t("Open patient check-in")} →</span>
+        </button>
       </div>
 
-      <button
-        onClick={() => {
-          resetPatientIntake()
-          setPatientKioskOpen(true)
-        }}
-        className="mb-8 flex w-full max-w-md items-center justify-center gap-3 rounded-xl border-2 border-teal-700 bg-teal-50 px-6 py-5 text-lg font-bold text-teal-900 shadow-sm hover:bg-teal-100"
-      >
-        <span className="text-2xl">✚</span> {t("Open MediKiosk Patient Check-in")}{" "}
-        <span>→</span>
-      </button>
 
       {/* Footer notice */}
       <div
@@ -229,8 +225,7 @@ export function Login() {
           paddingTop: 16,
         }}
       >
-        This system is for authorized hospital personnel only. All access is
-        logged. Session expires after 30 minutes of inactivity.
+        {t("This system is for authorized hospital personnel only. All access is logged. Session expires after 30 minutes of inactivity.")}
       </div>
 
       {/* Version */}
@@ -238,8 +233,9 @@ export function Login() {
         className="mt-3 text-xs"
         style={{ color: "#CBD5E1", fontFamily: "var(--font-mono)" }}
       >
-        MediTriage v2.1 · AI Model v1.4 · HIPAA Compliant
+        {t("MediTriage v2.1 · AI Model v1.4 · HIPAA Compliant")}
       </div>
+      </main>
     </div>
   )
 }

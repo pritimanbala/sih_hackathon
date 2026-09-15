@@ -145,7 +145,7 @@ export function AdminReferrals() {
                             <Btn
                               variant={d.availability === 'Available' ? 'primary' : 'secondary'}
                               size="xs"
-                              onClick={(event) => { event.stopPropagation(); assignConsultant(referral.patientId, d.id) }}
+                              onClick={() => assignConsultant(referral.patientId, d.id)}
                               disabled={isAssigned}
                             >
                               Assign

@@ -7,6 +7,7 @@ import {
   validateAbha,
 } from "../services/abha"
 import { speakConsent } from "../services/speech"
+import { translate } from "../i18n"
 import { Html5Qrcode } from "html5-qrcode"
 
 const LANGUAGES: {
@@ -65,6 +66,7 @@ export function PatientKiosk() {
   const [registration, setRegistration] = useState({ name: "", phone: "", aadhaar: "", email: "", code: "" })
   const [emailSent, setEmailSent] = useState(false)
   const [policyAccepted, setPolicyAccepted] = useState(false)
+  const t = (text: string) => translate(text, patientLanguage)
   const language =
     LANGUAGES.find((item) => item.id === patientLanguage) ?? LANGUAGES[0]
   const progress =
@@ -120,12 +122,12 @@ export function PatientKiosk() {
               <strong className="block text-lg text-slate-900">
                 MediKiosk
               </strong>
-              <small className="text-slate-500">Patient check-in</small>
+              <small className="text-slate-500">{t("Patient Check-in")}</small>
             </span>
           </button>
           <div className="flex items-center gap-2">
             <label className="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-2 py-1 text-sm text-slate-600">
-              <span className="sr-only">Select language</span>
+              <span className="sr-only">{t("Select language")}</span>
               <select
                 value={patientLanguage}
                 onChange={(event) => setPatientLanguage(event.target.value as PatientLanguage)}
@@ -139,7 +141,7 @@ export function PatientKiosk() {
               onClick={goHome}
               className="rounded-lg px-4 py-3 text-base font-semibold text-slate-600 hover:bg-slate-100"
             >
-              Exit
+              <span aria-hidden="true">↪</span>{t("Exit")}
             </button>
           </div>
         </header>
@@ -161,7 +163,7 @@ export function PatientKiosk() {
                     index === progress ? "text-teal-800" : "text-slate-400"
                   }`}
                 >
-                  {name}
+                  {t(name)}
                 </div>
               </div>
             ))}
@@ -451,15 +453,16 @@ export function PatientKiosk() {
 }
 
 function Title({ title, subtitle }: { title: string, subtitle: string }) {
+  const { patientLanguage } = useApp()
   return (
-    <>
-      <h1 className="text-3xl font-bold text-slate-900 sm:text-4xl">{title}</h1>
-      <p className="mx-auto mt-4 max-w-xl text-lg leading-relaxed text-slate-600">
-        {subtitle}
-      </p>
-    </>
+  <>
+  <h1 className="text-3xl font-bold text-slate-900 sm:text-4xl">{translate(title, patientLanguage)}</h1>
+  <p className="mx-auto mt-4 max-w-xl text-lg leading-relaxed text-slate-600">
+  {translate(subtitle, patientLanguage)}
+  </p>
+  </>
   )
-}
+  }
 function Choice({
   icon,
   title,
@@ -471,44 +474,44 @@ function Choice({
   detail?: string
   onClick: () => void
 }) {
+  const { patientLanguage } = useApp()
   return (
     <button
       onClick={onClick}
       className="mt-4 flex w-full items-center gap-5 rounded-2xl border-2 border-slate-200 p-5 text-left transition hover:border-teal-600 hover:bg-teal-50"
     >
-      <span className="text-3xl">{icon}</span>
+      <span className="text-3xl" aria-hidden="true">{icon}</span>
       <span>
-        <strong className="block text-xl text-slate-900">{title}</strong>
+        <strong className="block text-xl text-slate-900">{translate(title, patientLanguage)}</strong>
         {detail && (
           <small className="mt-1 block text-base text-slate-600">
-            {detail}
+            {translate(detail, patientLanguage)}
           </small>
         )}
       </span>
-      <span className="ml-auto text-2xl text-teal-700">›</span>
+      <span className="ml-auto text-2xl text-teal-700" aria-hidden="true">›</span>
     </button>
   )
 }
-function Primary({ onClick, label }: { onClick: () => void, label: string }) {
+  function Primary({ onClick, label }: { onClick: () => void, label: string }) {
+  const { patientLanguage } = useApp()
   return (
-    <button
-      onClick={onClick}
-      className="mt-8 min-h-16 w-full rounded-2xl bg-teal-700 px-6 text-xl font-bold text-white shadow-lg shadow-teal-900/20 hover:bg-teal-800"
-    >
-      {label}
-    </button>
+  <button
+  onClick={onClick}
+  className="mt-8 flex min-h-16 w-full items-center justify-center gap-2 rounded-2xl bg-teal-700 px-6 text-xl font-bold text-white shadow-lg shadow-teal-900/20 hover:bg-teal-800"
+  >
+  <span aria-hidden="true">→</span>{translate(label, patientLanguage)}
+  </button>
   )
-}
-function Back({ onClick }: { onClick: () => void }) {
+  }
+  function Back({ onClick }: { onClick: () => void }) {
+  const { patientLanguage } = useApp()
   return (
-    <button
-      onClick={onClick}
-      className="mt-6 px-5 py-3 text-lg font-semibold text-slate-600"
-    >
-      ← Back
-    </button>
+  <button onClick={onClick} className="mt-8 inline-flex items-center gap-2 text-lg font-semibold text-slate-600 hover:text-slate-900">
+  <span aria-hidden="true">←</span>{translate("Back", patientLanguage)}
+  </button>
   )
-}
+  }
 function IdentifierEntry({
   title,
   value,
