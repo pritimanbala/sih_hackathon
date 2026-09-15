@@ -33,47 +33,13 @@ export function Login() {
           </label>
         </div>
       </nav>
-      <main className="px-3 py-8 sm:px-6 sm:py-12">
-      {/* Header */}
-      <div className="text-center mb-12">
-        <div className="flex items-center justify-center gap-3 mb-4">
-          <div
-            className="flex items-center justify-center rounded-lg text-white font-bold"
-            style={{
-              width: 44,
-              height: 44,
-              background: "#1D4ED8",
-              fontSize: 15,
-              fontFamily: "var(--font-mono)",
-            }}
-          >
-            AI
-          </div>
-          <div className="text-left">
-            <div
-              className="text-2xl font-bold tracking-tight"
-              style={{ color: "#0F172A" }}
-            >
-              MediTriage
-            </div>
-            <div
-              className="text-sm"
-              style={{ color: "#64748B", fontFamily: "var(--font-mono)" }}
-            >
-              {t("AI-Powered Imaging Triage Platform")}
-            </div>
-          </div>
-        </div>
-        <p
-          className="text-sm max-w-sm mx-auto leading-relaxed"
-          style={{ color: "#64748B" }}
-        >
-          {t("Select your role to access the appropriate workspace. All sessions are logged and audited.")}
-        </p>
-      </div>
+      <main className="px-3 py-8 sm:px-6 sm:py-10">
+      <p className="mx-auto mb-8 max-w-xl text-center text-sm leading-relaxed text-slate-600">
+        {t("Select your role to access the appropriate workspace. All sessions are logged and audited.")}
+      </p>
 
       {/* Role cards */}
-      <div className="mx-auto grid w-full max-w-[960px] grid-cols-1 items-stretch justify-center gap-4 px-0 mb-8 sm:grid-cols-2 sm:gap-5 sm:px-4">
+      <div className="mx-auto mb-8 grid w-full max-w-[960px] grid-cols-1 items-stretch gap-4 px-0 sm:grid-cols-2 sm:gap-5 sm:px-4">
         {[
           {
             role: "admin" as Role,
