@@ -1,10 +1,12 @@
 import { useState } from "react"
 import { useApp } from "../context"
-import type { Role } from "../types"
+import type { PatientLanguage, Role } from "../types"
+import { languageLabels, translate } from "../i18n"
 
 export function Login() {
-  const { setRole, setView, setPatientKioskOpen, resetPatientIntake } = useApp()
+  const { setRole, setView, setPatientKioskOpen, resetPatientIntake, patientLanguage, setPatientLanguage } = useApp()
   const [hovered, setHovered] = useState<Role | null>(null)
+  const t = (text: string) => translate(text, patientLanguage)
 
   const handleSelect = (role: Role) => {
     setRole(role)
@@ -19,9 +21,18 @@ export function Login() {
 
   return (
     <div
-      className="min-h-screen flex flex-col items-center justify-center"
+      className="relative min-h-screen overflow-x-hidden px-3 py-8 sm:px-6 sm:py-12"
       style={{ background: "#F8FAFC" }}
     >
+      <label className="absolute right-3 top-3 flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-2 py-1.5 text-xs text-slate-600 shadow-sm sm:right-6 sm:top-6">
+        <span className="sr-only">{t("Select language")}</span>
+        <span aria-hidden="true">文</span>
+        <select value={patientLanguage} onChange={(event) => setPatientLanguage(event.target.value as PatientLanguage)} className="max-w-[92px] bg-transparent font-semibold outline-none" aria-label={t("Select language")}>
+          <option value="en">{languageLabels.en}</option>
+          <option value="hi">{languageLabels.hi}</option>
+          <option value="ta">{languageLabels.ta}</option>
+        </select>
+      </label>
       {/* Header */}
       <div className="text-center mb-12">
         <div className="flex items-center justify-center gap-3 mb-4">
@@ -48,7 +59,7 @@ export function Login() {
               className="text-sm"
               style={{ color: "#64748B", fontFamily: "var(--font-mono)" }}
             >
-              AI-Powered Imaging Triage Platform
+              {t("AI-Powered Imaging Triage Platform")}
             </div>
           </div>
         </div>
@@ -56,13 +67,12 @@ export function Login() {
           className="text-sm max-w-sm mx-auto leading-relaxed"
           style={{ color: "#64748B" }}
         >
-          Select your role to access the appropriate workspace. All sessions are
-          logged and audited.
+          {t("Select your role to access the appropriate workspace. All sessions are logged and audited.")}
         </p>
       </div>
 
       {/* Role cards */}
-      <div className="mx-auto flex w-full max-w-[900px] flex-col items-stretch justify-center gap-5 px-4 mb-10 sm:flex-row">
+      <div className="mx-auto grid w-full max-w-[900px] grid-cols-1 items-stretch justify-center gap-4 px-0 mb-8 sm:grid-cols-3 sm:gap-5 sm:px-4">
         {[
           {
             role: "admin" as Role,
@@ -113,7 +123,7 @@ export function Login() {
               key={role}
               role="button"
               tabIndex={0}
-              aria-label={`Enter as ${title}`}
+              aria-label={`Enter as ${t(title)}`}
               onMouseEnter={() => setHovered(role)}
               onMouseLeave={() => setHovered(null)}
               onClick={() => handleSelect(role)}
@@ -154,7 +164,7 @@ export function Login() {
                     className="font-semibold text-sm"
                     style={{ color: "#0F172A" }}
                   >
-                    {title}
+                    {t(title)}
                   </div>
                   <div
                     className="text-xs"
@@ -168,7 +178,7 @@ export function Login() {
                 className="text-xs leading-relaxed mb-4"
                 style={{ color: "#64748B" }}
               >
-                {description}
+                {t(description)}
               </p>
               <ul className="space-y-1">
                 {capabilities.map((c) => (
@@ -178,13 +188,13 @@ export function Login() {
                     style={{ color: "#475569" }}
                   >
                     <span style={{ color, fontSize: 8 }}>●</span>
-                    {c}
+                    {t(c)}
                   </li>
                 ))}
               </ul>
               <button
                 type="button"
-                aria-label={`Enter as ${title}`}
+                aria-label={`Enter as ${t(title)}`}
                 onClick={(event) => {
                   event.stopPropagation()
                   handleSelect(role)
@@ -192,7 +202,7 @@ export function Login() {
                 className="mt-4 w-full text-xs font-semibold flex items-center gap-1.5 justify-center py-2 rounded transition-opacity hover:opacity-90 focus-visible:outline-2 focus-visible:outline-offset-2"
                 style={{ background: color, color: "#fff" }}
               >
-                Enter as {title} →
+                {t("Enter as")} {t(title)} →
               </button>
             </div>
           )
@@ -206,7 +216,7 @@ export function Login() {
         }}
         className="mb-8 flex w-full max-w-md items-center justify-center gap-3 rounded-xl border-2 border-teal-700 bg-teal-50 px-6 py-5 text-lg font-bold text-teal-900 shadow-sm hover:bg-teal-100"
       >
-        <span className="text-2xl">✚</span> Open MediKiosk Patient Check-in{" "}
+        <span className="text-2xl">✚</span> {t("Open MediKiosk Patient Check-in")}{" "}
         <span>→</span>
       </button>
 

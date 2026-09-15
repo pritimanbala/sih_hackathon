@@ -3,6 +3,7 @@ import { useState } from 'react'
 import { useApp } from '../context'
 import type { View } from '../types'
 import { NOTIFICATIONS } from '../data/mock'
+import { languageLabels, translate } from '../i18n'
 
 interface NavItem { label: string; view: View; icon: string }
 
@@ -106,19 +107,19 @@ export function Shell({ children }: { children: ReactNode }) {
               className="inline-block rounded-full"
               style={{ width: 6, height: 6, background: role === 'doctor' ? '#16A34A' : '#1D4ED8' }}
             />
-            {roleLabel}
+            {translate(roleLabel, patientLanguage)}
           </div>
         </div>
 
         {/* Nav */}
         <nav className="flex-1 overflow-y-auto py-3 px-3">
           {nav.map(({ section, items }) => (
-            <div key={section} className="mb-4">
+            <div key={translate(section, patientLanguage)} className="mb-4">
               <div
                 className="text-xs font-semibold uppercase tracking-widest px-2 mb-1"
                 style={{ color: '#475569', fontFamily: 'var(--font-mono)', fontSize: 9 }}
               >
-                {section}
+                {translate(section, patientLanguage)}
               </div>
               {items.map(item => {
                 const active = view === item.view
@@ -137,7 +138,7 @@ export function Shell({ children }: { children: ReactNode }) {
                     onMouseLeave={e => { if (!active) (e.currentTarget as HTMLButtonElement).style.background = 'transparent' }}
                   >
                     <span className="text-base leading-none" style={{ opacity: 0.7, width: 16, textAlign: 'center' }}>{item.icon}</span>
-                    <span className="flex-1">{item.label}</span>
+                    <span className="flex-1">{translate(item.label, patientLanguage)}</span>
                     {isNotif && unread > 0 && (
                       <span
                         className="text-xs rounded-full flex items-center justify-center"
@@ -172,7 +173,7 @@ export function Shell({ children }: { children: ReactNode }) {
         <button aria-label="Close navigation" className="absolute inset-0 bg-slate-950/40" onClick={() => setMenuOpen(false)} />
         <aside className="relative flex h-full w-72 max-w-[85vw] flex-col bg-[#0F172A] shadow-xl">
           <div className="flex items-center justify-between border-b border-[#1E293B] px-5 py-5"><span className="text-sm font-semibold text-white">MediTriage</span><button aria-label="Close menu" className="text-xl text-slate-400" onClick={() => setMenuOpen(false)}>×</button></div>
-          <nav className="flex-1 overflow-y-auto px-3 py-3">{nav.map(({ section, items }) => <div key={section} className="mb-4"><div className="px-2 mb-1 text-[9px] font-semibold uppercase tracking-widest text-slate-600">{section}</div>{items.map(item => <button key={item.view} onClick={() => { setView(item.view); setMenuOpen(false) }} className={`flex w-full items-center gap-2.5 rounded px-2.5 py-2 text-left text-sm ${view === item.view ? 'bg-blue-700 text-white' : 'text-slate-400'}`}><span>{item.icon}</span><span>{item.label}</span></button>)}</div>)}</nav>
+          <nav className="flex-1 overflow-y-auto px-3 py-3">{nav.map(({ section, items }) => <div key={translate(section, patientLanguage)} className="mb-4"><div className="px-2 mb-1 text-[9px] font-semibold uppercase tracking-widest text-slate-600">{translate(section, patientLanguage)}</div>{items.map(item => <button key={item.view} onClick={() => { setView(item.view); setMenuOpen(false) }} className={`flex w-full items-center gap-2.5 rounded px-2.5 py-2 text-left text-sm ${view === item.view ? 'bg-blue-700 text-white' : 'text-slate-400'}`}><span>{item.icon}</span><span>{translate(item.label, patientLanguage)}</span></button>)}</div>)}</nav>
         </aside>
       </div>
 
@@ -186,20 +187,20 @@ export function Shell({ children }: { children: ReactNode }) {
           <div className="flex items-center gap-2">
             <button aria-label="Open navigation" className="mr-1 rounded p-1 text-lg text-slate-600 md:hidden" onClick={() => setMenuOpen(true)}>☰</button>
             <span className="text-sm font-medium" style={{ color: '#0F172A' }}>
-              {getViewTitle(view)}
+              {translate(getViewTitle(view), patientLanguage)}
             </span>
           </div>
           <div className="flex items-center gap-2 sm:gap-4">
             <label className="flex items-center gap-1.5 rounded border border-slate-200 bg-white px-2 py-1 text-[11px] text-slate-600" title="Select language">
               <span aria-hidden="true">文</span>
-              <span className="sr-only">Language</span>
+              <span className="sr-only">{translate("Language", patientLanguage)}</span>
               <select
                 value={patientLanguage}
                 onChange={(event) => setPatientLanguage(event.target.value as typeof patientLanguage)}
                 className="bg-transparent font-medium outline-none"
                 aria-label="Select language"
               >
-                <option value="en">English</option>
+                <option value="en">{languageLabels.en}</option>
                 <option value="hi">हिन्दी</option>
                 <option value="ta">தமிழ்</option>
               </select>
