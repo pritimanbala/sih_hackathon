@@ -10,7 +10,8 @@ export function normalizeAbha(value: string) {
 }
 
 export function extractAbhaIdentifier(value: string) {
-  const match = value.match(/\b\d{2}[-\s]?\d{4}[-\s]?\d{4}[-\s]?\d{4}\b/)
+  // QR payloads may contain labels, tabs, newlines, or repeated separators.
+  const match = value.match(/(?<!\d)(?:\d[\s-]*){14}(?!\d)/u)
   return match ? normalizeAbha(match[0]) : null
 }
 

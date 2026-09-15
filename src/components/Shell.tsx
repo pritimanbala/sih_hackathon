@@ -67,7 +67,7 @@ const DOCTOR_NAV: { section: string; items: NavItem[] }[] = [
 ]
 
 export function Shell({ children }: { children: ReactNode }) {
-  const { role, setRole, view, setView, readNotifications } = useApp()
+  const { role, setRole, view, setView, readNotifications, patientLanguage, setPatientLanguage } = useApp()
   const [menuOpen, setMenuOpen] = useState(false)
   const nav = role === 'doctor' ? DOCTOR_NAV : role === 'radiologist' ? RADIOLOGIST_NAV : ADMIN_NAV
   const roleLabel = role === 'doctor' ? 'Doctor View' : role === 'radiologist' ? 'Radiologist View' : 'Admin / Reception'
@@ -190,6 +190,20 @@ export function Shell({ children }: { children: ReactNode }) {
             </span>
           </div>
           <div className="flex items-center gap-2 sm:gap-4">
+            <label className="flex items-center gap-1.5 rounded border border-slate-200 bg-white px-2 py-1 text-[11px] text-slate-600" title="Select language">
+              <span aria-hidden="true">文</span>
+              <span className="sr-only">Language</span>
+              <select
+                value={patientLanguage}
+                onChange={(event) => setPatientLanguage(event.target.value as typeof patientLanguage)}
+                className="bg-transparent font-medium outline-none"
+                aria-label="Select language"
+              >
+                <option value="en">English</option>
+                <option value="hi">हिन्दी</option>
+                <option value="ta">தமிழ்</option>
+              </select>
+            </label>
             <button
               onClick={() => setView('notifications')}
               className="relative flex items-center justify-center rounded-full transition-colors"

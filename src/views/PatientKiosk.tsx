@@ -123,12 +123,25 @@ export function PatientKiosk() {
               <small className="text-slate-500">Patient check-in</small>
             </span>
           </button>
-          <button
-            onClick={goHome}
-            className="rounded-lg px-4 py-3 text-base font-semibold text-slate-600 hover:bg-slate-100"
-          >
-            Exit
-          </button>
+          <div className="flex items-center gap-2">
+            <label className="flex items-center gap-1.5 rounded-lg border border-slate-200 bg-white px-2 py-1 text-sm text-slate-600">
+              <span className="sr-only">Select language</span>
+              <select
+                value={patientLanguage}
+                onChange={(event) => setPatientLanguage(event.target.value as PatientLanguage)}
+                className="bg-transparent font-semibold outline-none"
+                aria-label="Select language"
+              >
+                {LANGUAGES.map((item) => <option key={item.id} value={item.id}>{item.label}</option>)}
+              </select>
+            </label>
+            <button
+              onClick={goHome}
+              className="rounded-lg px-4 py-3 text-base font-semibold text-slate-600 hover:bg-slate-100"
+            >
+              Exit
+            </button>
+          </div>
         </header>
         <div className="px-5 pt-5 sm:px-10">
           <div className="grid grid-cols-4 gap-1">
@@ -275,7 +288,14 @@ export function PatientKiosk() {
                   title="Scan QR / Barcode"
                   subtitle="Point your camera at the QR code on your ABHA card."
                 />
-                <CameraQrScanner onText={(text) => { const found = extractAbhaIdentifier(text); if (found) continueWithIdentifier(found); else setError("We found a QR code, but it did not contain an ABHA ID.") }} onError={setError} />
+                <CameraQrScanner onText={(text) => {
+                  const found = extractAbhaIdentifier(text)
+                  if (found) {
+                    continueWithIdentifier(found)
+                    return
+                  }
+                  setError("We found a QR code, but it did not contain an ABHA ID in the format 12-3456-7890-1234.")
+                }} onError={setError} />
                 <IdentifierEntry
                   title="Scanner result"
                   value={abha}
