@@ -34,9 +34,6 @@ export function Login() {
         </div>
       </nav>
       <main className="px-3 py-8 sm:px-6 sm:py-10">
-      <p className="mx-auto mb-8 max-w-xl text-center text-sm leading-relaxed text-slate-600">
-        {t("Select your role to access the appropriate workspace. All sessions are logged and audited.")}
-      </p>
 
       {/* Role cards */}
       <div className="mx-auto mb-8 grid w-full max-w-[960px] grid-cols-1 items-stretch gap-4 px-0 sm:grid-cols-2 sm:gap-5 sm:px-4">
