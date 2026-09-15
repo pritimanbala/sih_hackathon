@@ -134,8 +134,9 @@ export function Login() {
                   handleSelect(role)
                 }
               }}
-              className="min-w-0 flex-1 text-left rounded-lg transition-all duration-150"
-              style={{
+              className="order-4 min-w-0 flex-1 text-left rounded-lg transition-all duration-150"
+style={{
+                order: role === "admin" ? 1 : role === "doctor" ? 2 : 4,
                 width: "100%",
                 minHeight: 340,
                 padding: 24,
@@ -208,7 +209,7 @@ export function Login() {
             </div>
           )
         })}
-        <button type="button" onClick={() => { resetPatientIntake(); setPatientKioskOpen(true) }} className="min-w-0 rounded-lg border-2 border-teal-200 bg-teal-50 p-6 text-left shadow-sm transition hover:border-teal-600 hover:bg-teal-100 sm:col-span-2">
+        <button type="button" onClick={() => { resetPatientIntake(); setPatientKioskOpen(true) }} style={{ order: 3 }} className="min-w-0 rounded-lg border-2 border-teal-200 bg-teal-50 p-6 text-left shadow-sm transition hover:border-teal-600 hover:bg-teal-100">
           <div className="flex items-center gap-3"><span className="flex h-10 w-10 items-center justify-center rounded bg-teal-700 text-xl text-white">✚</span><div><div className="font-semibold text-slate-900">{t("Patient")}</div><div className="text-xs text-slate-500">PATIENT</div></div></div>
           <p className="mt-3 text-sm text-slate-600">{t("Open patient check-in")}</p>
           <span className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded bg-teal-700 py-2 text-xs font-semibold text-white">✚ {t("Open patient check-in")} →</span>

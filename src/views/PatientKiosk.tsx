@@ -186,7 +186,7 @@ export function PatientKiosk() {
                   {language.welcome}
                 </h1>
                 <p className="mt-4 text-xl text-slate-600">
-                  Choose your language
+                  {t("Choose your language")}
                 </p>
                 <div className="mt-8 grid gap-4 sm:grid-cols-3">
                   {LANGUAGES.map((item) => (
@@ -199,7 +199,7 @@ export function PatientKiosk() {
                           : "border-slate-200 text-slate-700 hover:border-teal-400"
                       }`}
                     >
-                      {item.label}
+                      <span aria-hidden="true">◉</span> {item.label}
                     </button>
                   ))}
                 </div>
@@ -326,7 +326,7 @@ export function PatientKiosk() {
                 <Title title="Scan your ABHA card" subtitle="Point the camera at the printed ABHA ID. Text is detected locally in your browser." />
                 <CameraTextScanner onText={(text) => { const detected = extractAbhaIdentifier(text); if (detected) { setAbha(detected); continueWithIdentifier(detected) } else setError("Text was found, but no ABHA ID format was detected. Please enter it manually.") }} onError={setError} />
                 {error && <p className="mt-3 rounded-xl bg-red-50 p-3 text-red-800">{error}</p>}
-                <button onClick={() => setMethod("manual")} className="mt-5 rounded-xl bg-teal-700 px-6 py-4 text-lg font-bold text-white">Enter manually</button>
+                <button onClick={() => setMethod("manual")} className="mt-5 inline-flex items-center justify-center gap-2 rounded-xl bg-teal-700 px-6 py-4 text-lg font-bold text-white"><span aria-hidden="true">⌨</span>{t("Enter manually")}</button>
                 <Back onClick={() => setMethod(null)} />
               </>
             )}
@@ -354,7 +354,7 @@ export function PatientKiosk() {
                     onClick={() => setStep("consent")}
                     className="rounded-xl bg-teal-700 py-5 text-xl font-bold text-white"
                   >
-                    Yes, continue
+                    <span aria-hidden="true">✓</span> {t("Yes, continue")}
                   </button>
                   <button
                     onClick={() => {
@@ -364,7 +364,7 @@ export function PatientKiosk() {
                     }}
                     className="rounded-xl border-2 border-slate-300 py-5 text-xl font-bold text-slate-700"
                   >
-                    No, go back
+                    <span aria-hidden="true">←</span> {t("No, go back")}
                   </button>
                 </div>
                 <p className="mt-5 text-sm text-slate-500">Identity details are limited to what is needed for confirmation.</p>
@@ -379,23 +379,23 @@ export function PatientKiosk() {
                   }
                   className="mt-2 rounded-xl border-2 border-teal-700 px-7 py-4 text-lg font-bold text-teal-800"
                 >
-                  🔊 Listen
+                  <span aria-hidden="true">🔊</span> {t("Listen")}
                 </button>
-                <details className="mt-5 rounded-xl border border-slate-200 p-4 text-left text-sm text-slate-600"><summary className="cursor-pointer text-base font-bold text-slate-800">Read the patient consent policy</summary><p className="mt-3">MediKiosk uses the information you provide to prepare a clinical history for your healthcare provider. Your assessment does not begin unless you agree. This implementation structure must be reviewed by the hospital's legal and compliance teams before production use.</p></details>
-                <label className="mt-5 flex items-start gap-3 rounded-xl bg-slate-50 p-4 text-left text-base text-slate-700"><input type="checkbox" checked={policyAccepted} onChange={(event) => setPolicyAccepted(event.target.checked)} className="mt-1 h-6 w-6 accent-teal-700" /><span>I have read and agree to the patient consent policy.</span></label>
+                <details className="mt-5 rounded-xl border border-slate-200 p-4 text-left text-sm text-slate-600"><summary className="cursor-pointer text-base font-bold text-slate-800">{t("Read the patient consent policy")}</summary><p className="mt-3">MediKiosk uses the information you provide to prepare a clinical history for your healthcare provider. Your assessment does not begin unless you agree. This implementation structure must be reviewed by the hospital's legal and compliance teams before production use.</p></details>
+                <label className="mt-5 flex items-start gap-3 rounded-xl bg-slate-50 p-4 text-left text-base text-slate-700"><input type="checkbox" checked={policyAccepted} onChange={(event) => setPolicyAccepted(event.target.checked)} className="mt-1 h-6 w-6 accent-teal-700" /><span>{t("I have read and agree to the patient consent policy.")}</span></label>
                 <div className="mt-8 grid gap-4 sm:grid-cols-2">
                   <button
                     disabled={!policyAccepted}
                     onClick={acceptConsent}
                     className="rounded-xl bg-teal-700 py-5 text-xl font-bold text-white disabled:cursor-not-allowed disabled:opacity-40"
                   >
-                    I agree
+                    <span aria-hidden="true">✓</span> {t("I agree")}
                   </button>
                   <button
                     onClick={() => setStep("declined")}
                     className="rounded-xl border-2 border-slate-300 py-5 text-xl font-bold text-slate-700"
                   >
-                    I do not agree
+                    <span aria-hidden="true">×</span> {t("I do not agree")}
                   </button>
                 </div>
                 <p className="mt-5 text-sm text-slate-500">
@@ -555,7 +555,8 @@ function IdentifierEntry({
 }
 
 function RegistrationInput({ label, value, onChange, inputMode = "text" }: { label: string; value: string; onChange: (value: string) => void; inputMode?: "text" | "tel" | "numeric" | "email" }) {
-  return <label className="text-base font-semibold text-slate-700">{label}<input value={value} inputMode={inputMode} onChange={(event) => onChange(event.target.value)} className="mt-1 w-full rounded-xl border-2 border-slate-300 px-4 py-3 text-lg font-normal outline-none focus:border-teal-700" /></label>
+  const { patientLanguage } = useApp()
+  return <label className="text-base font-semibold text-slate-700">{translate(label, patientLanguage)}<input aria-label={translate(label, patientLanguage)} value={value} inputMode={inputMode} onChange={(event) => onChange(event.target.value)} className="mt-1 w-full rounded-xl border-2 border-slate-300 px-4 py-3 text-lg font-normal outline-none focus:border-teal-700" /></label>
 }
 
 function CameraQrScanner({ onText, onError }: { onText: (text: string) => void; onError: (message: string) => void }) {
